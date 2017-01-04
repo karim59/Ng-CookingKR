@@ -1,0 +1,131 @@
+﻿@model NgCookingKR.Models.ViewModel.RecipeCreate
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/ScriptRecipe.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<div class="col-xs-12 col-sm-9">
+    <div class="content" id="content_recettes_new">
+        <h1 class="page-title">Nouvelle recette</h1>
+        <section class="section">
+            @using (Html.BeginForm("Create", "Recipes", null, FormMethod.Post,
+                                          new { enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+                    <div class="col-xs-6">
+                        @Html.HiddenFor(m => m.AddedIngredients)
+                        @Html.HiddenFor(m => m.RemovedIngredients)
+                        <input type="hidden" id="ingremov" name="ingremov" value="">
+                        <input type="hidden" id="hid" name="hid" value="">
+                        <p class="line">
+                            <label for="">Le nom de votre recette</label>
+                            @Html.TextBoxFor(m=>m.Name,new { @class="mb0 wide", required = "required" })
+                        </p>
+                        <p class="line">
+                            <label for="">Catégorie</label>           
+                            @Html.DropDownListFor(m=>m.idCategory, new List<SelectListItem> { new SelectListItem { Text = "Viandes", Value = "1" },
+                            new SelectListItem { Text = "Fruits", Value = "2" },
+                            new SelectListItem { Text = "Légumes", Value = "3" },
+                            new SelectListItem { Text = "Poissons", Value = "4" },
+                            new SelectListItem { Text = "Alcools", Value = "5" },
+                            new SelectListItem { Text = "Etc...", Value = "6" }})
+                        </p>
+
+                        <p class="line">
+                            <label for="">Photo de la recette</label>
+                            <input id="Photo" title="Upload a product image" type="file" name="file" />
+                        </p>
+    
+                        <p class="line">                          
+                            <label for="">Préparation de votre recette</label>
+                            @Html.TextAreaFor(m=>m.Description, new { @class ="resizable mb0 wide", required = "required" })
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p class="line">                          
+                        </p>
+                        <p class="line ac">
+                            <img class="current_img" src="~/img/recette_placeholder.jpg" alt="Visuel recette">
+                        </p>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="hr mt2 mb2"></div>
+                    </div>
+                    <div class="col-xs-12">
+                        <p class="line ac">
+                            <label for="">Sélectionnez tous les ingrédients de votre recette</label>
+                        </p>
+                        <p class="ac">
+                            @Html.DropDownList("dropdownCategory", new SelectList(string.Empty, "Value", "Text"), "Catégorie", new { @style = "width:250px;" })            
+                            <span class="span-label"><span class="glyphicon glyphicon-menu-right nm"></span></span>
+                            @Html.DropDownList("dropdownIngredient", new SelectList(string.Empty, "Value", "Text"), "Please select your ingredient", new { @style = "width:250px;" })                                                       
+                            <button type="button" id="bt" name="bt" class="btn btn_color3"><span class="glyphicon glyphicon-plus"></span></button>
+                        </p>
+                        <div class="ingredients_list">
+                            <ul id="ing" name="ing" class="list ac">
+                                @*<li class="item" id="kk">
+                                    <img class="item-img" src="~/img/ingredients/pasteque.jpg" alt="pasteque">
+                                    <p class="item-name"  title="pasteque">pasteque</p>
+                                    <button type="button" class="remove_ingredient" value="krkrk"><span class="glyphicon glyphicon-remove"></span></button>
+                                </li>*@
+                            </ul>
+                        </div>
+                        <div class="ac">
+                            <p class="recette_total_calories" id="cal">
+                                <input type="hidden" id="nbCalorie" name="nbCalorie" value="0">
+                                <span class="tit" name="cal"> <span class="mass"></span>  </span><span class="val" id="cal">0<span class="unit">kcal</span></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="hr mb2"></div>
+                    </div>
+                    <div class="col-xs-12 ac">
+                        @Html.AntiForgeryToken()
+                        <div class="form-actions no-color">
+                            <input type="submit" value="CreateRecette" class="btn btn_color3 recette_save" />
+                        </div>
+
+                    </div>
+
+
+                    <!-- Afficher au clic sur "valider ma recette" lorsque tout s'est bien déroulé -->
+                    <div class="col-xs-12">
+                        @if (!Model.Description.Equals(""))
+                        {
+                            <p class="ac mt2 tb">
+                                <span class="glyphicon glyphicon-thumbs-up color3"></span>
+                                <span>Votre recette a bien été ajoutée !</span>
+                            </p>
+                        }
+                        
+                        <br />
+                        <p class="ac">
+                            <a class="btn btn_color1" href="communaute_details.html"><span class="glyphicon glyphicon-cutlery"></span><span>Mes recettes</span></a>
+                        </p>
+                    </div>
+                    <!-- Afficher au clic sur "valider ma recette" si certains éléments sont manquants -->
+                    @*<div class="col-xs-12">
+                        <p class="ac mt2 tb">
+                            <span class="glyphicon glyphicon-exclamation-sign color2"></span>
+                            <span>Woops ! Votre recette est super foireuse</span>
+                        </p>
+                        <p class="ac">Vous avez dû oublier quelque chose...</p>
+                    </div>*@
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+
+<div id="mobile-back-layer"></div>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.main.js"></script>

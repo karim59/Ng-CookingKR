@@ -1,0 +1,169 @@
+﻿@model NgCookingKR.Models.ViewModel.RecipeDetail
+
+
+@{
+    ViewBag.Title = "RecipeDetail";
+}
+
+
+<div id="wrapper">
+    <main id="main">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-9">
+                    <div class="content" id="content_recettes_details">
+                        <section class="section">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <img class="recette_img" src="~/img/recettes/@Model.RecipeListIngredient.Recipe.Photo" alt="Le tajine de ta maman">
+                                </div>
+                                <div class="col-xs-8">
+                                    <h1 class="rec_name">@Model.RecipeListIngredient.Recipe.Name</h1>
+                                    <p class="rec_note">
+                                        <span class="stars">
+                                            @for(int i=0;i<Model.RecipeListIngredient.Note;i++)
+                                            { 
+                                            <span class="star glyphicon glyphicon-heart"></span>
+                                            }
+                                        </span>
+                                        <span class="notes">| @Model.RecipeListIngredient.Note/5 - 120 votes</span>
+                                    </p>
+                                    <div class="ingredients_list">
+                                        <p class="list-title">Ingrédients</p>
+                                        <ul class="list">
+                                            @for (int i = 0; i < Model.RecipeListIngredient.ListIngredient.Count; i++)
+                                            {
+                                                <li class="item">
+                                                    <img class="item-img" src="~/img/ingredients/@Model.RecipeListIngredient.ListIngredient[i].IngredientImage" alt="tomate">
+                                                    <p class="item-name" title="tomate">@Model.RecipeListIngredient.ListIngredient[i].Name</p>
+                                                </li>
+                                            }
+                                            
+                                        </ul>
+                                    </div>
+                                    <p class="rec_cal">Valeur calorique <span class="for">(100g)</span> : <span class="val">@Model.RecipeListIngredient.Calorie kcal</span></p>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="section">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 class="overline-title"><span class="text">Préparation</span></h2>
+                                </div>
+                                <div class="col-xs-12">
+                                    <p>@Model.RecipeListIngredient.Recipe.Preparation</p>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="section">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 class="overline-title"><span class="text">Commentaires</span></h2>
+                                </div>
+
+                                @if (Session["LogedUserID"]!=null)
+                                {
+                                    if (Convert.ToInt32(Session["LogedUserID"]) != Model.RecipeListIngredient.Recipe.IdCreator)
+                                    { 
+                                <div class="col-xs-12 col-sm-6">
+                                   @using (@Html.BeginForm("RecipeDetail", "Recipes", null, FormMethod.Post))
+                                   {
+                                    <div class="panel">
+                                        <div class="filters">
+                                            <h3 class="panel_title">Donnez-nous votre avis !</h3>
+                               
+                                            @Html.HiddenFor(m => m.RecipeListIngredient.Recipe.IdRecipe);
+                      
+                                                <div class="filter">
+                                                    <p><label for="">Notez cette recette</label></p>
+                                                    @Html.DropDownListFor(m => m.RecipeListIngredient.Note, new List<SelectListItem> {
+                                                   new SelectListItem {Text="1", Value="1"},
+                                                   new SelectListItem {Text="2", Value="2"},
+                                                   new SelectListItem {Text="3", Value="3"},
+                                                   new SelectListItem {Text="4", Value="4"},
+                                                   new SelectListItem {Text="5", Value="5"},
+
+                                               })
+                                                    
+                                                </div>
+                                                <div class="filter">
+                                                    <p><label for="">Le titre de votre commentaire</label></p>
+                                                    @Html.TextBoxFor(m => m.RecipeListIngredient.Title, new { placeholder = "ex: Amazingue !" , required = "required" })
+                                                   
+                                                </div>
+                                                <div class="filter">
+                                                    <p><label for="">Votre commentaire</label></p>
+                                                    @Html.TextAreaFor(m => m.RecipeListIngredient.Comm, new { @class = "wide", placeholder = "Franchement cette NgRecette, c’est de la bombe. Le genre de saveurs qui t’éveillent les papilles, t’as vu ! Woula, j’ai kiffé", required = "required" })
+                                                   
+                                                </div>
+                                                <div class="ar">
+                                                    <input type="submit" class="btn btn_color1" value="Poster !">
+                                                </div>
+                                            @*</form>*@
+                                        </div>
+                                    </div>
+                                   }
+                                </div>
+
+                                    }
+                                }
+                                <div class="col-xs-12 col-sm-6">
+                                    <ul class="comments">
+                                        @for (int i = 0; i < Model.RecipeListIngredient.ListCommentCreator.Count; i++)
+                                        {
+                                            <li class="comment">
+                                                <p class="name">@Model.RecipeListIngredient.ListCommentCreator[i].TitleComment<span class="note">@Model.RecipeListIngredient.ListCommentCreator[i].NoteCreator/5</span></p>
+                                                <p class="by">par <a href="communaute_details.html"></a>@Model.RecipeListIngredient.ListCommentCreator[i].NameCreator</p>
+                                                <p class="text">@Model.RecipeListIngredient.ListCommentCreator[i].Comment</p>
+                                            </li>
+                                        }
+
+                                 
+                                    </ul>
+                                    <div class="row showmore">
+                                        <div class="col-xs-12">
+                                            <button type="button" class="btn btn_grey"><span class="glyphicon glyphicon-chevron-down"></span>Afficher d'avantage</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="section">
+                            <h2 class="title">~ Vous aimerez aussi... ~</h2>
+                            <div class="recettes row">
+                               
+                                @if (Model.RecipeLike!=null)
+                                {
+                                    for (int i = 0; i < Model.RecipeLike.Count; i++)
+                                    {
+                                        <div class="col-xs-6 col-sm-3 recette">
+                                            <a href="/Recipes/RecipeDetail?id=@Model.RecipeLike[i].recipe.IdRecipe&note=@Model.RecipeLike[i].note.ToString()">
+                                                <img src="~/img/recettes/@Model.RecipeLike[i].recipe.Photo" alt="@Model.RecipeLike[i].recipe.Name">
+                                                <div class="top" title="note : @Model.RecipeLike[i].note/5">
+                                                    <span class="note">
+                                                       @for(int j=0;j< @Model.RecipeLike[i].note;j++)
+                                                       {
+                                                        <span class="glyphicon glyphicon-heart"></span>
+                                                       }
+                                                    </span>
+                                                </div>
+                                                <div class="bot">
+                                                    <p class="name">@Model.RecipeLike[i].recipe.Name</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+
+                                    }
+                                
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+</div>

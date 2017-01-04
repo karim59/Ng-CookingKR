@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8b4e7b8c1c204378a5b35c1dc1f0df6c" Name="Diagram1">
+        <EntityTypeShape EntityType="CookingModel.Creator" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.Ingredient" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.IngredientCategory" Width="1.5" PointX="3.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.Note" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.Recipe" Width="1.5" PointX="6" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.RecipeCategory" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CookingModel.RecipeIngredient" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="CookingModel.FK_Note_ToCreator" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_Recipe_ToCreator" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_Ingredient_ToIngredientCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_RecipeIngredient_ToIngredient" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_Note_ToRecipe" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_Recipe_ToRecipeCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="CookingModel.FK_RecipeIngredient_ToRecipe" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

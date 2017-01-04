@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Creator">
+          <Key>
+            <PropertyRef Name="IdCreator" />
+          </Key>
+          <Property Name="IdCreator" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Old" Type="int" Nullable="false" />
+          <Property Name="Bio" Type="varchar" MaxLength="1000" />
+          <Property Name="Grade" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="CreatorPicture" Type="varchar" MaxLength="200" />
+          <Property Name="Password" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="IdIngredient" />
+          </Key>
+          <Property Name="IdIngredient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdIngredientCategory" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Calorie" Type="float" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="IngredientImage" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="IngredientCategory">
+          <Key>
+            <PropertyRef Name="IdIngredientCategory" />
+          </Key>
+          <Property Name="IdIngredientCategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="IdNote" />
+          </Key>
+          <Property Name="IdNote" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="200" />
+          <Property Name="IdCreator" Type="int" Nullable="false" />
+          <Property Name="IdRecipe" Type="int" Nullable="false" />
+          <Property Name="Record" Type="float" />
+          <Property Name="TitleComment" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recipe">
+          <Key>
+            <PropertyRef Name="IdRecipe" />
+          </Key>
+          <Property Name="IdRecipe" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRecipeCategory" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Preparation" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Photo" Type="varchar" MaxLength="100" />
+          <Property Name="IdCreator" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RecipeCategory">
+          <Key>
+            <PropertyRef Name="IdRecipeCategory" />
+          </Key>
+          <Property Name="IdRecipeCategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RecipeIngredient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRecipe" Type="int" Nullable="false" />
+          <Property Name="IdIngredient" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Ingredient_ToIngredientCategory">
+          <End Role="IngredientCategory" Type="Self.IngredientCategory" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IngredientCategory">
+              <PropertyRef Name="IdIngredientCategory" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="IdIngredientCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Note_ToCreator">
+          <End Role="Creator" Type="Self.Creator" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creator">
+              <PropertyRef Name="IdCreator" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="IdCreator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Note_ToRecipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="IdRecipe" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="IdRecipe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recipe_ToCreator">
+          <End Role="Creator" Type="Self.Creator" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creator">
+              <PropertyRef Name="IdCreator" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="IdCreator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recipe_ToRecipeCategory">
+          <End Role="RecipeCategory" Type="Self.RecipeCategory" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecipeCategory">
+              <PropertyRef Name="IdRecipeCategory" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="IdRecipeCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecipeIngredient_ToIngredient">
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="1" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredient">
+              <PropertyRef Name="IdIngredient" />
+            </Principal>
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="IdIngredient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecipeIngredient_ToRecipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="IdRecipe" />
+            </Principal>
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="IdRecipe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CookingModelStoreContainer">
+          <EntitySet Name="Creator" EntityType="Self.Creator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ingredient" EntityType="Self.Ingredient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Note" EntityType="Self.Note" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recipe" EntityType="Self.Recipe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecipeCategory" EntityType="Self.RecipeCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ingredient_ToIngredientCategory" Association="Self.FK_Ingredient_ToIngredientCategory">
+            <End Role="IngredientCategory" EntitySet="IngredientCategory" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Note_ToCreator" Association="Self.FK_Note_ToCreator">
+            <End Role="Creator" EntitySet="Creator" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Note_ToRecipe" Association="Self.FK_Note_ToRecipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe_ToCreator" Association="Self.FK_Recipe_ToCreator">
+            <End Role="Creator" EntitySet="Creator" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe_ToRecipeCategory" Association="Self.FK_Recipe_ToRecipeCategory">
+            <End Role="RecipeCategory" EntitySet="RecipeCategory" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecipeIngredient_ToIngredient" Association="Self.FK_RecipeIngredient_ToIngredient">
+            <End Role="Ingredient" EntitySet="Ingredient" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecipeIngredient_ToRecipe" Association="Self.FK_RecipeIngredient_ToRecipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CookingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Creator">
+          <Key>
+            <PropertyRef Name="IdCreator" />
+          </Key>
+          <Property Name="IdCreator" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Old" Type="Int32" Nullable="false" />
+          <Property Name="Bio" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Grade" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatorPicture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Note_ToCreator" FromRole="Creator" ToRole="Note" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_ToCreator" FromRole="Creator" ToRole="Recipe" />
+        </EntityType>
+        <EntityType Name="Ingredient">
+          <Key>
+            <PropertyRef Name="IdIngredient" />
+          </Key>
+          <Property Name="IdIngredient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdIngredientCategory" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Calorie" Type="Double" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IngredientImage" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="IngredientCategory" Relationship="Self.FK_Ingredient_ToIngredientCategory" FromRole="Ingredient" ToRole="IngredientCategory" />
+          <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_RecipeIngredient_ToIngredient" FromRole="Ingredient" ToRole="RecipeIngredient" />
+        </EntityType>
+        <EntityType Name="IngredientCategory">
+          <Key>
+            <PropertyRef Name="IdIngredientCategory" />
+          </Key>
+          <Property Name="IdIngredientCategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Ingredient" Relationship="Self.FK_Ingredient_ToIngredientCategory" FromRole="IngredientCategory" ToRole="Ingredient" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="IdNote" />
+          </Key>
+          <Property Name="IdNote" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdCreator" Type="Int32" Nullable="false" />
+          <Property Name="IdRecipe" Type="Int32" Nullable="false" />
+          <Property Name="Record" Type="Double" />
+          <Property Name="TitleComment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Creator" Relationship="Self.FK_Note_ToCreator" FromRole="Note" ToRole="Creator" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Note_ToRecipe" FromRole="Note" ToRole="Recipe" />
+        </EntityType>
+        <EntityType Name="Recipe">
+          <Key>
+            <PropertyRef Name="IdRecipe" />
+          </Key>
+          <Property Name="IdRecipe" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRecipeCategory" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Preparation" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Photo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdCreator" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Creator" Relationship="Self.FK_Recipe_ToCreator" FromRole="Recipe" ToRole="Creator" />
+          <NavigationProperty Name="Note" Relationship="Self.FK_Note_ToRecipe" FromRole="Recipe" ToRole="Note" />
+          <NavigationProperty Name="RecipeCategory" Relationship="Self.FK_Recipe_ToRecipeCategory" FromRole="Recipe" ToRole="RecipeCategory" />
+          <NavigationProperty Name="RecipeIngredient" Relationship="Self.FK_RecipeIngredient_ToRecipe" FromRole="Recipe" ToRole="RecipeIngredient" />
+        </EntityType>
+        <EntityType Name="RecipeCategory">
+          <Key>
+            <PropertyRef Name="IdRecipeCategory" />
+          </Key>
+          <Property Name="IdRecipeCategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_Recipe_ToRecipeCategory" FromRole="RecipeCategory" ToRole="Recipe" />
+        </EntityType>
+        <EntityType Name="RecipeIngredient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRecipe" Type="Int32" Nullable="false" />
+          <Property Name="IdIngredient" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ingredient" Relationship="Self.FK_RecipeIngredient_ToIngredient" FromRole="RecipeIngredient" ToRole="Ingredient" />
+          <NavigationProperty Name="Recipe" Relationship="Self.FK_RecipeIngredient_ToRecipe" FromRole="RecipeIngredient" ToRole="Recipe" />
+        </EntityType>
+        <Association Name="FK_Note_ToCreator">
+          <End Role="Creator" Type="Self.Creator" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creator">
+              <PropertyRef Name="IdCreator" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="IdCreator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recipe_ToCreator">
+          <End Role="Creator" Type="Self.Creator" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Creator">
+              <PropertyRef Name="IdCreator" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="IdCreator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingredient_ToIngredientCategory">
+          <End Role="IngredientCategory" Type="Self.IngredientCategory" Multiplicity="1" />
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IngredientCategory">
+              <PropertyRef Name="IdIngredientCategory" />
+            </Principal>
+            <Dependent Role="Ingredient">
+              <PropertyRef Name="IdIngredientCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecipeIngredient_ToIngredient">
+          <End Role="Ingredient" Type="Self.Ingredient" Multiplicity="1" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingredient">
+              <PropertyRef Name="IdIngredient" />
+            </Principal>
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="IdIngredient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Note_ToRecipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="Note" Type="Self.Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="IdRecipe" />
+            </Principal>
+            <Dependent Role="Note">
+              <PropertyRef Name="IdRecipe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recipe_ToRecipeCategory">
+          <End Role="RecipeCategory" Type="Self.RecipeCategory" Multiplicity="1" />
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecipeCategory">
+              <PropertyRef Name="IdRecipeCategory" />
+            </Principal>
+            <Dependent Role="Recipe">
+              <PropertyRef Name="IdRecipeCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecipeIngredient_ToRecipe">
+          <End Role="Recipe" Type="Self.Recipe" Multiplicity="1" />
+          <End Role="RecipeIngredient" Type="Self.RecipeIngredient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recipe">
+              <PropertyRef Name="IdRecipe" />
+            </Principal>
+            <Dependent Role="RecipeIngredient">
+              <PropertyRef Name="IdRecipe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CookingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Creator" EntityType="Self.Creator" />
+          <EntitySet Name="Ingredient" EntityType="Self.Ingredient" />
+          <EntitySet Name="IngredientCategory" EntityType="Self.IngredientCategory" />
+          <EntitySet Name="Note" EntityType="Self.Note" />
+          <EntitySet Name="Recipe" EntityType="Self.Recipe" />
+          <EntitySet Name="RecipeCategory" EntityType="Self.RecipeCategory" />
+          <EntitySet Name="RecipeIngredient" EntityType="Self.RecipeIngredient" />
+          <AssociationSet Name="FK_Note_ToCreator" Association="Self.FK_Note_ToCreator">
+            <End Role="Creator" EntitySet="Creator" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe_ToCreator" Association="Self.FK_Recipe_ToCreator">
+            <End Role="Creator" EntitySet="Creator" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingredient_ToIngredientCategory" Association="Self.FK_Ingredient_ToIngredientCategory">
+            <End Role="IngredientCategory" EntitySet="IngredientCategory" />
+            <End Role="Ingredient" EntitySet="Ingredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecipeIngredient_ToIngredient" Association="Self.FK_RecipeIngredient_ToIngredient">
+            <End Role="Ingredient" EntitySet="Ingredient" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Note_ToRecipe" Association="Self.FK_Note_ToRecipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="Note" EntitySet="Note" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recipe_ToRecipeCategory" Association="Self.FK_Recipe_ToRecipeCategory">
+            <End Role="RecipeCategory" EntitySet="RecipeCategory" />
+            <End Role="Recipe" EntitySet="Recipe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecipeIngredient_ToRecipe" Association="Self.FK_RecipeIngredient_ToRecipe">
+            <End Role="Recipe" EntitySet="Recipe" />
+            <End Role="RecipeIngredient" EntitySet="RecipeIngredient" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CookingModelStoreContainer" CdmEntityContainer="CookingEntities">
+          <EntitySetMapping Name="Creator">
+            <EntityTypeMapping TypeName="CookingModel.Creator">
+              <MappingFragment StoreEntitySet="Creator">
+                <ScalarProperty Name="IdCreator" ColumnName="IdCreator" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Old" ColumnName="Old" />
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+                <ScalarProperty Name="CreatorPicture" ColumnName="CreatorPicture" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ingredient">
+            <EntityTypeMapping TypeName="CookingModel.Ingredient">
+              <MappingFragment StoreEntitySet="Ingredient">
+                <ScalarProperty Name="IdIngredient" ColumnName="IdIngredient" />
+                <ScalarProperty Name="IdIngredientCategory" ColumnName="IdIngredientCategory" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Calorie" ColumnName="Calorie" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IngredientImage" ColumnName="IngredientImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IngredientCategory">
+            <EntityTypeMapping TypeName="CookingModel.IngredientCategory">
+              <MappingFragment StoreEntitySet="IngredientCategory">
+                <ScalarProperty Name="IdIngredientCategory" ColumnName="IdIngredientCategory" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Note">
+            <EntityTypeMapping TypeName="CookingModel.Note">
+              <MappingFragment StoreEntitySet="Note">
+                <ScalarProperty Name="IdNote" ColumnName="IdNote" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IdCreator" ColumnName="IdCreator" />
+                <ScalarProperty Name="IdRecipe" ColumnName="IdRecipe" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="TitleComment" ColumnName="TitleComment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recipe">
+            <EntityTypeMapping TypeName="CookingModel.Recipe">
+              <MappingFragment StoreEntitySet="Recipe">
+                <ScalarProperty Name="IdRecipe" ColumnName="IdRecipe" />
+                <ScalarProperty Name="IdRecipeCategory" ColumnName="IdRecipeCategory" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Preparation" ColumnName="Preparation" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="IdCreator" ColumnName="IdCreator" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecipeCategory">
+            <EntityTypeMapping TypeName="CookingModel.RecipeCategory">
+              <MappingFragment StoreEntitySet="RecipeCategory">
+                <ScalarProperty Name="IdRecipeCategory" ColumnName="IdRecipeCategory" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecipeIngredient">
+            <EntityTypeMapping TypeName="CookingModel.RecipeIngredient">
+              <MappingFragment StoreEntitySet="RecipeIngredient">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRecipe" ColumnName="IdRecipe" />
+                <ScalarProperty Name="IdIngredient" ColumnName="IdIngredient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

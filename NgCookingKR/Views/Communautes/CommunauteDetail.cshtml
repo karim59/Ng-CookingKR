@@ -1,0 +1,103 @@
+﻿@model NgCookingKR.Models.ViewModel.CommunauteDetail
+@{
+    ViewBag.Title = "CommunauteDetail";
+}
+
+<div id="wrapper">
+ 
+    <main id="main">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-xs-12 col-sm-9">
+                    <div class="content" id="content_communaute_details">
+
+                        <section class="section details">
+                            <div class="row">
+                                <div class="col-vxs-12 col-xs-6 col-sm-5">
+                                    <div class="avatar-wrap">
+                                        <img class="avatar" src="~/img/users/@Model.Creator.CreatorPicture" alt="Hetta Van Deventer">
+                                    </div>
+                                </div>
+                                <div class="col-vxs-12 col-xs-6 col-sm-7">
+                                    <div class="infos">
+                                        <h1 class="name">@Model.Creator.Name</h1>
+                                        <p class="level">
+                                            @{
+                                                int a = 0;
+                                            <span class="stars">
+                                               
+                                                    @for (int i = 0; i < Model.Note; i++)
+                                                {
+                                                    a++;
+                                                    <span class="glyphicon glyphicon-star"></span>
+                                                }
+                                            </span>
+                                            if (a < 3)
+                                            {
+                                                <span class="status">Junior</span>
+                                            }
+                                            else if (a >= 3 && a < 4)
+                                            {
+                                                <span class="status">Sénior</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="status">Expert</span>
+                                            }
+                                            @*<span class="status">Expert</span>*@
+                                                    }
+                                        </p>
+                                        <p class="city"><span class="fwb">Ville : </span>@Model.Creator.City</p>
+                                        <p class="age"><span class="fwb">Age : </span>@Model.Creator.Old ans</p>
+                                        <p class="shared"><span class="fwb">@Model.Creator.Name</span> a partagé <span class="nb">@Model.RecipeNote.Count recettes</span></p>
+                                        <p class="bio"><span class="fwb">BIO : </span> @Model.Creator.Bio.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Afficher le bloc ci-dessous uniquement si lutilisateur connecté se rend sur sa propre page -->
+                        <section class="section newrecette">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p class="c">Vous en avez sous la toque ?!</p>
+                                    <p class="b">
+                                        <a href="/Recipes/Create" class="btn btn_color1"><span class="glyphicon glyphicon-plus-sign"></span><span>Créez une nouvelle recette</span></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="section">
+                            <h2 class="title">~ Les recettes de @Model.Creator.Name ~</h2>
+                            <div class="recettes row">
+
+
+                                @for (int i = 0; i < Model.RecipeNote.Count; i++)
+                                {
+                                    <div class="col-xs-6 col-sm-3 recette">
+                                        <a href="/Recipes/RecipeDetail?id=@Model.RecipeNote[i].recipe.IdRecipe&note=@Model.RecipeNote[i].note">
+                                            <img src="~/img/recettes/@Model.RecipeNote[i].recipe.Photo" alt="Le tajine de ta maman">
+                                            <div class="top" title="note : @Model.RecipeNote[i].note/5">
+                                                <span class="note">
+                                                    @for(int j=0;j<Model.RecipeNote[i].note;j++)
+                                                    { 
+                                                    <span class="glyphicon glyphicon-heart"></span>
+                                                    }
+                                                </span>
+                                            </div>
+                                            <div class="bot">
+                                                <p class="name">Tajine de poulet</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+               
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,212 @@
+﻿@model NgCookingKR.Models.ViewModel.RecipeHome
+
+@{
+    ViewBag.Title = "Recette";
+}
+
+
+<div id="wrapper">
+
+    <main id="main">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-9">
+                    <div class="content" id="content_recettes">
+                        <h1 class="page-title">Les recettes</h1>
+
+                        <section class="section">
+                            <h2 class="title">~ Trouver une recette ~</h2>
+                            
+                            <div class="panel">
+                                <div class="row imgback">
+                                    <div class="col-xs-3"></div>
+                                    <div class="col-xs-12 col-sm-9 fp">
+                                        <div class="filters">
+                                        @using (@Html.BeginForm())
+                                                {
+                                            
+                                                <div class="filter">
+                                                    <p><label for="">Nom de la recette</label></p>
+                                                    <p><input id="recipeName" name="recipeName" type="text" placeholder="ex: Tajine de poulet" id="recipeName"></p>
+                                                </div>
+                                                <div class="filter">
+                                                    <p><label for="">Ingrédient(s) utlisé(s) pour la recette</label></p>
+                                                    <p><input type="text" id="ingredientUsed" name="ingredientUsed" placeholder="ex: poulet;oeuf;farine" id="ingredientUsed"></p>
+                                                </div>
+                                                <div class="filter">
+                                                    <p><label for="">Valeur calorique de la recette <span class="fwn">(kcal/100g)</span></label></p>
+                                                    <p>
+                                                        <span class="span-label">entre :</span>
+                                                        <input type="number" class="mr0" id="calMin" name="calMin" placeholder="ex: 450">
+                                                        <span class="span-label">et</span>
+                                                        <input type="number" id="calMax" name="calMax" placeholder="ex: 750">
+                                                    </p>
+                                                </div>
+                                                <input type="submit" value="Search" />
+                                          
+                                                }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="sort">
+                                <p>
+                                    <span class="span-label">Trier par :</span>
+                                    <select name="" id="">
+                                        <option value="az">Ordre alphabétique (A->Z)</option>
+                                        <option value="za">Ordre alphabétique (Z->A)</option>
+                                        <option value="new">Les plus récentes d'abord</option>
+                                        <option value="old">Les plus anciennes d'abord</option>
+                                        <option value="best">Les mieux notées d'abord</option>
+                                        <option value="worst">Les moins bien notées d'abord</option>
+                                        <option value="cal">Du moins calorique au plus calorique</option>
+                                        <option value="cal_desc">Du plus calorique au moins calorique</option>
+                                    </select>
+                                </p>
+                            </div>
+
+                            @*@for (int i = 0; i < Model.RecipeSearch.Count; i++)
+                            {
+                                <div class="col-xs-6 col-sm-3 recette">
+                                    <a href="/Recipes/RecipeDetail?id=@Model.RecipeSearch[i].recipe.IdRecipe&note=@Model.RecipeSearch[i].note">
+                                        <img src="~/img/recettes/@Model.RecipeSearch[i].recipe.Photo" alt="Cake au jambon et aux olives">
+                                        <div class="top" title="note : @Model.RecipeSearch[i].note/5">
+                                            <span class="note">
+                                                @for (int j = 0; j < Model.RecipeSearch[i].note; j++)
+                                                {
+                                                    <span class="glyphicon glyphicon-heart"></span>
+                                                }
+                                            </span>
+                                        </div>
+                                        <div class="bot">
+                                            <p class="name">@Model.RecipeSearch[i].recipe.Name</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            }*@
+
+                           
+
+                        </section>
+                    
+
+                        <section class="section">
+                            @if (Model.RecipeSearch.Count == 0)
+                            {
+                                //<h1 class="col-xs-12 blank">Aucune recette ne correspond à votre recherche</h1>
+                                <div class="result">
+                                    <div class="recettes row">
+                                        <p class="col-xs-12 blank">Aucune recette ne correspond à votre recherche</p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="recettes row">
+                                @for (int i = 0; i < Model.RecipeSearch.Count; i++)
+
+                                {
+                                    <div class="col-xs-6 col-sm-3 recette">
+                                        <a href="/Recipes/RecipeDetail?id=@Model.RecipeSearch[i].recipe.IdRecipe&note=@Model.RecipeSearch[i].note">
+                                            <img src="~/img/recettes/@Model.RecipeSearch[i].recipe.Photo" alt="Cake au jambon et aux olives">
+                                            <div class="top" title="note : @Model.RecipeSearch[i].note/5">
+                                                <span class="note">
+                                                    @for (int j = 0; j < Model.RecipeSearch[i].note; j++)
+                                                    {
+                                                        <span class="glyphicon glyphicon-heart"></span>
+                                                    }
+                                                </span>
+                                            </div>
+                                            <div class="bot">
+                                                <p class="name">@Model.RecipeSearch[i].recipe.Name</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+
+                            </div>
+                        </section>
+
+                            <section class="section">
+                                <h2 class="title">~ Meilleures recettes ~</h2>
+                                <div class="recettes row">
+
+                                    @for (int i = 0; i < 4; i++)
+                                    {
+                                        <div class="col-xs-6 col-sm-3 recette">
+                                            <a href="/Recipes/RecipeDetail?id=@Model.RecipeNote[i].recipe.IdRecipe&note=@Model.RecipeNote[i].note">
+                                                <img src="~/img/recettes/@Model.RecipeNote[i].recipe.Photo" alt="Tarte citron meringué">
+                                                <div class="top" title="note : @Model.RecipeNote[i].note/5">
+                                                    <span class="note">
+                                                        @for (int j = 0; j < Model.RecipeNote[i].note; j++)
+                                                        {
+                                                            <span class="glyphicon glyphicon-heart"></span>
+                                                        }
+
+                                                    </span>
+                                                </div>
+                                                <div class="bot">
+                                                    <p class="name">@Model.RecipeNote[i].recipe.Name</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </section>
+                            <section class="section">
+                                <h2 class="title">~ Nouvelles recettes ~</h2>
+                                <div class="recettes row">
+                                    @for (int i = 0; i < 4; i++)
+                                    {
+                                        <div class="col-xs-6 col-sm-3 recette">
+                                            <a href="/Recipes/RecipeDetail?id=@Model.RecipeListDate[i].recipe.IdRecipe&note=@Model.RecipeListDate[i].note">
+                                                <img src="~/img/recettes/@Model.RecipeListDate[i].recipe.Photo" alt="Cake au jambon et aux olives">
+                                                <div class="top" title="note : @Model.RecipeListDate[i].note/5">
+                                                    <span class="note">
+                                                        @for (int j = 0; j < Model.RecipeListDate[i].note; j++)
+                                                        {
+                                                            <span class="glyphicon glyphicon-heart"></span>
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <div class="bot">
+                                                    <p class="name">@Model.RecipeListDate[i].recipe.Name</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+
+                                </div>
+                            </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+<div class="popin" data-popin="connect_popin">
+    <div class="popin-content">
+        <div class="popin-scroll">
+            <p class="popin-title">Connexion</p>
+            <form action="#">
+                <p>
+                    <label for="co_user" class="fwb">Identifiant (email)</label>
+                    <input id="co_user" class="wide" type="text" />
+                </p>
+                <p>
+                    <label for="co_pwd" class="fwb">Mot de passe</label>
+                    <input id="co_pwd" class="wide" type="text" />
+                </p>
+                <p class="ac nm mt2">
+                    <button type="button" class="btn btn_big btn_color1"><span class="glyphicon glyphicon-ok"></span><span class="fwb uc">Valider</span></button>
+                </p>
+            </form>
+        </div>
+        <button class="close popin-close"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+    <div class="popin-backlayer"></div>
+</div>
+<div id="mobile-back-layer"></div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")

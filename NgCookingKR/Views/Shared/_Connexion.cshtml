@@ -1,0 +1,43 @@
+﻿@*@model IEnumerable<test4.Models.Creator>*@
+@model NgCookingKR.Models.Creator
+@{
+    ViewBag.Title = "Index";
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@*@RenderSection("scripts", required: false)*@
+
+<div class="popin" data-popin="connect_popin">
+    <div class="popin-content">
+        <div class="popin-scroll">
+            <p class="popin-title">Connexion</p>
+            @using (Html.BeginForm("Connexion", "Creators"))
+            {
+                <p>
+                    <label for="co_user" class="fwb">Identifiant (email)</label>
+                    @Html.TextBoxFor(m => m.Name,new { @class="wide", required = "Please insert your name" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                    
+                </p>
+                    <p>
+                        <label for="co_pwd" class="fwb">Mot de passe</label>
+                        @Html.PasswordFor(m=>m.Password, new { @class="wide" , required = "Please insert your password" })
+                   
+                    </p>
+                    <p class="ac nm mt2">
+
+                        <button type="submit" class="btn btn_big btn_color1"><span class="glyphicon glyphicon-ok"></span><span class="fwb uc">Valider</span></button>
+                    </p>
+                    
+            }
+        </div>
+        <button class="close popin-close"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+    <div class="popin-backlayer"></div>
+</div>
+
+
+
+
+

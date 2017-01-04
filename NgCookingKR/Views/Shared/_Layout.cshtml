@@ -1,0 +1,116 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mon application ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script>
+        function OpenLogin() {
+            var popin = $(this).attr("data-popin-open");
+            $("[data-popin='" + popin + "']").addClass("displayed");
+        }
+    </script>
+</head>
+<body>
+
+    <div id="wrapper">
+        <header id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="/Recipes/Accueil" class="logo">
+                            <img src="~/img/logo_header.png" alt="">
+                        </a>
+                        <div class="desc">
+                            <p>Partagez vos meilleures recettes avec<br />la communauté NgCooking</p>
+                            <p><a class="link" href="/Recipes/Recette"><strong>@Session["NbreRecipe"] recettes</strong> à découvrir !</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="mobile-menu-btn">
+                <i class="glyphicon glyphicon-menu-hamburger"></i>
+            </button>
+        </header>
+        <main id="main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3" id="col-nav">
+                        <button type="button" id="mobile-close-btn">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </button>
+                        <nav id="nav">
+                            <ul class="menu">
+                                <li class="page_hom">
+                                    @Html.ActionLink("Accueil", "Accueil", "Recipes")
+                                </li>
+                                <li class="page_rec">
+                                    @Html.ActionLink("Recettes", "Recette", "Recipes")
+                                </li>
+                                @if (ViewBag.IsConnected != null)
+                                {
+                                    <li class="page_ing">
+
+                                        @Html.ActionLink("Ingredients", "Ingredient", "Ingredients")
+
+                                    </li>
+                                }
+                                <li class="page_ing">
+
+                                    @Html.ActionLink("Ingredients", "Ingredient", "Ingredients")
+
+                                </li>
+                                <li class="page_com active">
+                                    <a href="/Communautes/Communaute">Communauté</a>
+                                </li>
+                            </ul>
+                            <div class="account-area">
+                       
+                                @if(Session["LogedUserID"]==null)
+                                { 
+                                @Html.Partial("~/Views/Shared/_Connexion.cshtml", new NgCookingKR.Models.Creator())
+                                <button type="button" class="button connect" data-popin-open="connect_popin"><span class="icon"></span>Connexion</button>
+                                }
+                                @if (Session["LogedUserID"] !=null)
+                                        {
+                                            int id = Convert.ToInt32(Session["LogedUserID"]);
+                                            <a href="/Creators/MyProfil" class="button account"><span class="icon"></span>Mon profil</a>
+                                }
+                             @if (Session["LogedUserID"] != null)
+                                   {
+                                <a href="/Creators/Deconnexion" class="button account"><span class="icon"></span>Deconnexion</a>
+                               
+                                   }
+                             </div>
+                        </nav>
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+
+        <footer id="footer">
+            <div class="container">
+                <div class="row cuisto-img-wrap">
+                    <div class="hidden-xs col-sm-3">
+                        <div class="cuisto-img"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse optio repellat temporibus molestiae ducimus quibusdam eum maiores voluptatum sapiente reprehenderit. Est, modi, tenetur. Tempora perferendis eveniet unde numquam cupiditate nam?</p>
+                        <div class="hr"></div>
+                        <p class="copyright">copyright ngcooking 2015-2016</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
